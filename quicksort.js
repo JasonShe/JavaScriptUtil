@@ -6,7 +6,7 @@
 // 递归：对初次划分出来的两个无序区间，递归调用第 1步和第 2步的算法，直到所有无序区间都只剩下一个元素为止。
 
 // 递归法快速排序
-/* function quickSortWithRecursive(arr) {
+function quickSortWithRecursive(arr) {
   if (arr.length <= 1) return arr
 
   // 取数组最接近中间的数位基准，也可以选取第一个，或者最后一个数为基准
@@ -29,39 +29,31 @@
     [pivot],
     quickSortWithRecursive(right)
   )
-} */
-
+}
+console.time('test1')
 var arr = [14, 3, 15, 7, 2, 76, 11]
-// console.log(quickSortWithRecursive(arr))
+console.log(quickSortWithRecursive(arr))
+console.timeEnd("test1");
 
 /**
  * 快速排序
  * @param { Arrya } array
  */
-function quickSort(array) {
-  sort(array, 0, array.length - 1)
+function quickSort(array, left = 0, right = array.length - 1) {
+  if (left > right) return
+  let storeIndex = partition(array, left, right)
+  quickSort(array, left, storeIndex - 1)
+  quickSort(array, storeIndex + 1, right)
 
-  // 排序
-  function sort(array, left, right) {
-    if (left > right) return
-    let storeIndex = partition(array, left, right)
-    sort(array, left, storeIndex - 1)
-    sort(array, storeIndex + 1, right)
-  }
-
-  // 分区，快排的核心
   function partition(array, left, right) {
-    // 开始时的基准元素可放在最右侧
-    let pivot = array[right]
-    let storeIndex = left
-
+    let storeIndex = left, provide = array[right]
     for (let i = left; i < right; i++) {
-      if (array[i] < pivot) {
+      if (array[i] < provide) {
         swap(array, storeIndex, i)
         storeIndex++
       }
     }
-    swap(array, right, storeIndex)
+    swap(array, storeIndex, right)
     return storeIndex
   }
 
@@ -75,4 +67,10 @@ function quickSort(array) {
   return array
 }
 
-console.log(quickSort([8, 4, 90, 8, 34, 67, 1, 26, 17]))
+console.time('test2')
+var arr2 = [14, 3, 15, 7, 2, 76, 11]
+console.log(quickSort(arr2))
+console.timeEnd("test2");
+
+// test1: 4.198ms
+// test2: 0.794ms
